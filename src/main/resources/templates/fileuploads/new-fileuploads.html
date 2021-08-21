@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts :: header">
+  <title>CSV File Upload</title>
+</head>
+<body>
+	<nav th:replace="layouts :: navbarUPLOAD"></nav>	
+	<div>
+		<br>
+		<div class="container">
+			<h4>CSV File Upload</h4>
+			<br>
+			<form method= "POST" th:action="@{/antenna-dashboard/fileuploads/csvupload/(_csrf.parameterName=${_csrf.token})}" enctype= "multipart/form-data">
+				<div class="form-group row">
+					<input type="file" name="file">
+				</div> 
+				<br>
+				<div class="form-group row">
+					<button class="btn btn-info col-2" type="submit">Upload</button>
+				</div>
+			</form>
+			<h5 th:text="${csvFileUploadMessage}"></h5>
+			<br>
+			<h5>CSV Format Guidelines</h5>
+			<table>
+				<tr>
+					<td><i>The following five lines in a CSV file consist of:</i></td>
+				</tr>
+				<tr></tr>
+				<tr>
+					<td>1) A header record (identified by the value 0 in column 1)</td>
+				</tr>
+				<tr>
+					<td>2) Three measurement records (identified by the value 1 in column 1)</td>
+				</tr>
+				<tr>
+					<td>3) A trailer record (identified by the value 999 in column 1)</td>
+				</tr>
+				<tr></tr>
+				<tr>
+					<td><b>0,ANT007,B,N,VSWR</b></td>
+				</tr>
+				<tr>
+					<td><b>1,145.700,1.52</b></td>
+				</tr>
+				<tr>
+					<td><b>1,145.725,1.60</b></td>
+				</tr>
+				<tr>
+					<td><b>1,145.750,1.65</b></td>
+				</tr>
+				<tr>
+					<td><b>999,5</b></td>
+				</tr>
+				<tr></tr>
+				<tr>
+					<td><i>Notes:</i></td>
+				</tr>
+				<tr>				
+					<td>1) Only one header record per file which always has five columns:</td>
+				</tr>
+				<tr>				   
+					<td>- Record identifier in column 1</td>
+				</tr>
+				<tr>
+				   <td>- Antenna code in column 2</td>
+				</tr>
+				<tr>
+				   <td>- Antenna type in column 3</td>
+				</tr>
+				<tr>
+				   <td>- Base antenna code or 'N' if none in column 4</td>
+				</tr>
+				<tr>
+				   <td>- Measurement code in column 5</td>
+				</tr>
+				<tr>
+					<td>2) Multiple measurement records which always have three columns:</td>
+				</tr>
+				<tr>
+				   <td>- Record identifier in column 1</td>
+				</tr>
+				<tr>
+				   <td>- Measuring (determinant) value in column 2</td>
+				</tr>
+				<tr>
+				   <td>- Measured (determined) value in column 3</td>
+				</tr>
+				<tr>
+					<td>3) Only one trailer record per file which always has two columns:</td>
+				</tr>
+				<tr>
+				   <td>- Record identifier in column 1</td>
+				</tr>
+				<tr>
+				   <td>- Number of records in the CSV file, including header and trailer</td> 
+				</tr>
+			</table>		
+		</div>
+	</div>
+</body>
+</html>

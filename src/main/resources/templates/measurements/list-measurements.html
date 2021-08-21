@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="layouts :: header">
+  <title>Antenna List</title>
+</head>
+<body>
+	<nav th:replace="layouts :: navbarEPIC"></nav>
+	<div sec:authorize="!isAuthenticated()">
+		You are not authenticated<br>
+		<a href="/login">Login</a>	
+	</div>
+	<div sec:authorize="isAuthenticated()">
+		<div>
+			<h4>Antenna List</h4>
+			<br>
+			<div sec:authorize="hasRole('ADMIN')">
+				<a th:href="@{/antenna-dashboard/measurements/listbaseantennas}" class="btn-primary btn-sm mb-3" >BaseAntennas</a>
+				<a th:href="@{/antenna-dashboard/measurements/listsubantennas}" class="btn-primary btn-sm mb-3" >Sub Antennas</a>
+			</div>
+			<br>
+			<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>Code</th>
+						<th>Name</th>
+						<th>Type</th>
+						<th>Description</th>
+						<th>Base Antenna Code</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="antenna : ${antennasList}"> 
+						<td th:text="${antenna.antennaCode}"></td>
+						<td th:text="${antenna.name}"></td>
+						<td th:text="${antenna.antennaTypeCode}"></td>
+						<td th:text="${antenna.description}"></td>
+						<td th:text="${antenna.mainAntennaCode}"></td>
+						<td sec:authorize=hasAnyRole('MANAGER','TEAMMEMBER','USER')>hidden</td>
+						<td>
+						<div sec:authorize="hasAnyRole('ADMIN','MANAGER')">
+							<a th:href="@{/antenna-dashboard/measurements/plot/(antennaCode=${antenna.antennaCode},measurementCode=GAIN)}" class="btn-info btn-sm" >Gain Plot</a>
+							<a th:href="@{/antenna-dashboard/measurements/plot/(antennaCode=${antenna.antennaCode},measurementCode=HPOLAR)}" class="btn-info btn-sm" >HPOL Plot</a>
+							<a th:href="@{/antenna-dashboard/measurements/plot/(antennaCode=${antenna.antennaCode},measurementCode=VPOLAR)}" class="btn-info btn-sm" >VPOL Plot</a>
+							<a th:href="@{/antenna-dashboard/measurements/plot/(antennaCode=${antenna.antennaCode},measurementCode=VSWR)}" class="btn-info btn-sm" >VSWR Plot</a>
+						</div>
+					  	 <div sec:authorize=hasAnyRole('TEAMMEMBER','USER')>No Action</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<h5 th:text="${antennasListMessage}"></h5>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts :: header">
+  <title>Antenna Dashboard</title>
+</head>
+<body>
+	<nav th:replace="layouts :: navbarAddBaseAnt"></nav>
+	<div sec:authorize="hasAnyRole('MANAGER','TEAMMEMBER','ADMIN')">
+
+
+
+		<br>
+		<div class="container">
+
+			<H3>Edit Base Antenna</H3>
+			<br>
+			<br>
+			<form th:action="@{/antenna-dashboard/baseantennas/save}" th:object="${antennaDto}" method="POST">
+
+				<!--  This will be used to bind to the task that was clicked on (USED FOR UPDATES)-->
+				<input type="hidden" th:field="${antennaDto.dateCreated}" />
+				<input type="hidden" th:field="${antennaDto.antennaId}" />
+				<input type="hidden" th:field="${antennaDto.antennaTypeCode}" />
+				<input type="hidden" th:field="${antennaDto.mainAntennaCode}" />
+				
+				<b>Antenna ID:</b>
+				<div class="form-group row" th:text="${antennaDto.antennaId}"></div>
+				<b>Main Antenna Code:</b>
+				<div class="form-group row" th:text="${antennaDto.mainAntennaCode}"></div>
+				
+				<b>Date created:</b>
+				<div class="form-group row" th:text="${antennaDto.dateCreated}"></div>
+
+				
+				<div class="form-group row">
+					<input type="text" placeholder="Antenna Name"
+						th:field="${antennaDto.name}">
+				</div>
+
+				<div class="form-group row">
+					<input type="text" placeholder="Description"
+						th:field="${antennaDto.description}"> 
+				</div>
+				
+
+				<div class="form-group row">
+					<input type="text" placeholder="Antenna Code"
+						th:field="${antennaDto.antennaCode}"> 
+				</div>
+				
+				
+
+				<div class="form-group row">
+					<button class="btn btn-info col-2" type="submit">Save Task</button>
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+</body>
+
+</html>

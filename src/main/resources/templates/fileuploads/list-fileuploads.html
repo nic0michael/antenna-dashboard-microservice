@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="layouts :: header">
+  <title>Antenna dashboard</title>
+</head>
+<body>
+	<nav th:replace="layouts :: navbarUPLOAD"></nav>	
+	<div sec:authorize="!isAuthenticated()">
+		You are not authenticated<br>
+		<a href="/login">Login</a>	
+	</div>
+	
+	<div sec:authorize="isAuthenticated()">
+		<div>
+			<h4>Uploaded Files</h4>
+			<br>
+			<div sec:authorize="hasRole('ADMIN')">
+				<a th:href="@{/antenna-dashboard/fileuploads/newcsv}" class="btn-primary btn-sm mb-3" >Upload CSV File</a>
+			</div>
+			<br>
+			<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>Antenna Code</th>
+						<th>Antenna Type</th>
+						<th>Date Uploaded</th>
+						<th>File Name</th>
+						<th>Measurement</th>
+						<th>Number of Records</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="fileImage : ${fileImagesList}"> 
+						<td th:text="${fileImage.antennaCode}"></td>
+						<td th:text="${fileImage.antennaTypeCode}"></td>
+						<td th:text="${fileImage.dateUploaded}"></td>
+						<td th:text="${fileImage.fileName}"></td>
+						<td th:text="${fileImage.measurementCode}"></td>
+						<td th:text="${fileImage.numberOfRecords}"></td>
+						<td th:text="${fileImage.status}"></td>
+						<td sec:authorize=hasAnyRole('MANAGER','TEAMMEMBER','USER')>hidden</td>			
+						<td>
+							<div sec:authorize="hasAnyRole('ADMIN','MANAGER')">
+								<a th:href="@{/antenna-dashboard/fileuploads/measurements/(antennaCode=${fileImage.antennaCode},publishedMessage=PENDING)}" class="btn-info btn-sm" >View Measurements</a>&nbsp;&nbsp;&nbsp;
+							</div>
+						  	 <div sec:authorize=hasAnyRole('TEAMMEMBER','USER')>No Action</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<h5 th:text="${fileImagesListMessage}"></h5>
+		</div>
+	</div>
+</body>
+</html>

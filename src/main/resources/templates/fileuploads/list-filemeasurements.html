@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layouts :: header">
+  <title>Antenna dashboard</title>
+</head>
+
+<body>
+	<nav th:replace="layouts :: navbarUSR"></nav>
+	<div sec:authorize="!isAuthenticated()">
+		You are not authenticated<br>
+		<a href="/login">Login</a>	
+	</div>
+	<h4>Uploaded File Measurements</h4>
+	<br>
+	<div sec:authorize="hasRole('ADMIN')">
+		<a th:href="@{/antenna-dashboard/fileuploads/publish/(antennaCode=${antennaCode})}" class="btn-primary btn-sm mb-3" >Publish Measurements</a>
+	</div>
+	<br>
+	<div sec:authorize="isAuthenticated()">
+		<table class="table table-bordered table-striped">
+			<thead class="thead-dark">
+				<tr>
+					<th>Antenna Code</th>
+					<th>Determinant</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="fileImageMeasurement : ${fileImageMeasurementsList}"> 
+					<td th:text="${fileImageMeasurement.antennaCode}"></td>
+					<td th:text="${fileImageMeasurement.determinant}"></td>
+					<td th:text="${fileImageMeasurement.value}"></td>
+					<td sec:authorize=hasAnyRole('MANAGER','TEAMMEMBER','USER')>hidden</td>			
+					<td>
+						<div sec:authorize=hasAnyRole('TEAMMEMBER','USER')>No Action</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<h5 th:text="${fileImageMeasurementsListMessage}"></h5>
+	</div>
+</body>
+</html>

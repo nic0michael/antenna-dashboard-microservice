@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts :: header">
+  <title>Antenna Dashboard</title>
+</head>
+<body>
+	<nav th:replace="layouts :: navbarAddSubAnt"></nav>
+	<div sec:authorize="hasAnyRole('MANAGER','TEAMMEMBER','ADMIN')">
+
+		
+
+		<br>
+		<div class="container">
+
+			<H3>Capture Sub-Antenna</H3>
+		<br><br>
+			<form th:action="@{/antenna-dashboard/baseantennas/savesub}" th:object="${antennaPersistRequest}" method="POST">
+
+
+				<!--  This will be used to bind to the task that was clicked on (USED FOR UPDATES)-->
+
+				<input type="hidden" th:field="${antennaPersistRequest.dateCreated}" />
+				<input type="hidden" th:field="${antennaPersistRequest.antennaId}" />
+				<input type="hidden" th:field="${antennaPersistRequest.antennaTypeCode}" />
+				<input type="hidden" th:field="${antennaPersistRequest.action}" />
+				<b>Antenna ID:</b>
+				<div class="form-group row" th:text="${antennaPersistRequest.antennaId}"></div>
+				
+				<b>Date created:</b>
+				<div class="form-group row" th:text="${antennaPersistRequest.dateCreated}"></div>
+				
+				<div class="form-group row">
+					<input type="text" placeholder="Antenna Name"
+						th:field="${antennaPersistRequest.name}">
+				</div>
+
+
+				<div class="form-group row">
+					<input type="text" placeholder="Description"
+						th:field="${antennaPersistRequest.description}"> 
+				</div>			
+
+				<div class="form-group row">
+					<input type="text" placeholder="Antenna Code"
+						th:field="${antennaPersistRequest.antennaCode}"> 
+				</div>
+				
+				<b>Assigned the Base-Antenna to this Sub-Antenna :</b>
+				<div class="form-group row">
+					<select th:field="${antennaPersistRequest.mainAntennaCode}">
+						<option th:each="baseAntenna : ${baseAntennasList}" th:value="${baseAntenna.antennaCode}" th:text="${baseAntenna.name}"></option> 
+					</select>
+				</div>
+
+				<div class="form-group row">
+					<button class="btn btn-info col-2" type="submit">Save Sub Antenna</button>
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+</body>
+
+</html>
